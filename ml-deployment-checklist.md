@@ -172,6 +172,7 @@ code.*
  if you are recommending videos to the users based on their viewing history, users would
  be more likely watch the videos you are serving them as recommendations.
  * How would you be able to [access the metrics][metrics-jordan] (e.g. Kibana, Grafana, MLflow, Neptune)?
+ * Who's going to monitor the metrics?
 
 ## 7. Can it be used?
 
