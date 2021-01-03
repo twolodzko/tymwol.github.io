@@ -20,6 +20,8 @@ Beware of the [Goodhart's law](https://en.wikipedia.org/wiki/Goodhart%27s_law), 
 some problem, not to play the metric at all cost.*
 
  * In plain English, what are you trying to do?
+ * Should you do it? Maybe the problem is not real, or "solving" it might actually be harmful
+ (e.g. it will be amplifying social biases).
  * Are there clear [performance indicators][first-objective] that would enable you to
  measure success?
  * What is the [definition of done][dod]? Can we define an [acceptance test][acceptance-test]
