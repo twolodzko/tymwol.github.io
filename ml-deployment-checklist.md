@@ -64,7 +64,7 @@ benchmark your model against it. Emmanuel Ameisen makes similar points in [his b
  * Was this, or similar, problem solved using machine learning by anyone before? What was the performance
  of those solutions?
  
-## 4. Is the model ready to deploy it?
+## 4. Is the model ready for deployment?
 
 *At this stage the data science magic happens. Data scientists conduct exploratory data analysis, clean the data,
 preprocess it, conduct feature engineering (see [Zheng & Casari][feature-engineering]), and validate the model.
@@ -171,7 +171,7 @@ code.*
  be more likely watch the videos you are serving them as recommendations.
  * How would you be able to [access the metrics][metrics-jordan] (e.g. Kibana, Grafana, MLflow, Neptune)?
 
-## 7. Can this model be used?
+## 7. Can it be used?
 
  * Do the benefits of using the model outweigh the cost of developing and deploying it?
  * What are the risks related to using the model (financial, business, legal, safety, reputational)?
