@@ -20,8 +20,13 @@ Beware of the [Goodhart's law](https://en.wikipedia.org/wiki/Goodhart%27s_law), 
 some problem, not to play the metric at all cost.*
 
  * In plain English, what are you trying to do?
- * Should you do it? Maybe the problem is not real, or "solving" it might actually be harmful
- (e.g. it will be amplifying social biases).
+ * Should you do it?
+
+   *Some problems are ill-posed, they sound reasonable at first, but in fact the actual underlying
+   problem is different (e.g. [X-Y problem][xy]). Another scenario where you shouldn't do it,
+   is when the technology could have harmful side-effects (e.g. [résumé screening][amz-resume-screen]
+   algorithm trained on historical data could amplify the social biases in the recruitment process).*
+
  * Are there clear [performance indicators][first-objective] that would enable you to
  measure success?
  * What is the [definition of done][dod]? Can we define an [acceptance test][acceptance-test]
@@ -57,15 +62,15 @@ some problem, not to play the metric at all cost.*
 *[Lean Startup][lean] has introduced the idea of [minimum viable product (MVP)][mvp], the simplest solution that
 "does the job". Before building a full-blown machine learning model, first try the cheap and easy solution like
 rule-based system, decision tree, linear regression etc. This would help you with framing the problem, but also
-you can use it to gather initial feedback ("is this what you need?"), and it would serve a baseline, so that you can
+can be used to gather initial feedback ("is this what you need?"), and would serve a baseline, so that you can
 benchmark your model against it. Emmanuel Ameisen makes similar points in [his book][ml-powered], and
 [this blog post][solve-nlp], there's also a nice [talk about baselines][baselines].*
 
  * What is your baseline? How was the problem solved before (not necessary using machine learning)?
  Do you have access to metrics, that would enable you to compare current solution with the machine learning one?
- * Was this, or similar, problem solved using machine learning by anyone before? What was the performance
+ * Was this, or similar, problem solved using machine learning by anyone before (literature)? What was the performance
  of those solutions?
- 
+
 ## 4. Is the model ready for deployment?
 
 *At this stage the data science magic happens. Data scientists conduct exploratory data analysis, clean the data,
@@ -87,8 +92,7 @@ overlooked while being important from the deployment point of view.*
 
  * Does the code run  (e.g. the Jupyter notebook does not crash)?
  * Was it proven that the model actually solves the problem you were trying to solve?
- * What metrics should be used to assess the model performance? How does the model perform?
- Is the performance acceptable?
+ * What metrics should be used to assess the model performance? Is the performance acceptable?
  * Did you check for overfitting?
  * Are there any potential [data leaks][data-leak] that might have inflated the performance?
  * Are the results reproducible? Is it documented (as a code) how to reproduce them?
@@ -96,14 +100,14 @@ overlooked while being important from the deployment point of view.*
 ### 4.3. Did you explore the predictions made by the model?
 
 *In some industries (e.g. finance) being able to explain the predictions is required by law. In many other
-areas model explainability and fairness may be important as well, or at least useful as a sanity checks.
+areas model explainability and fairness may be important as well, or at least useful as sanity checks.
 For more details check the [Interpretable Machine Learning][interpretable-ml] book by Christoph Molnar.*
 
  * Do the predictions resemble the real data (so-called [posterior predictive checks][ppc])? Are they realistic?
  * Are you able to explain the predictions ([partial dependence plots][pdp], subpopulation analysis, [Shapley values][shapley],
  what-if analysis)?
  * Did you check for biasses (e.g. gender, race)?
- * Did you manually check some of the misclassified examples? When does the model make mistakes? 
+ * Did you manually check some of the misclassified examples? When does the model make mistakes?
 
 ### 4.4. Does the code meet the quality standards?
 
@@ -111,11 +115,10 @@ For more details check the [Interpretable Machine Learning][interpretable-ml] bo
  * Are the dependencies of the code documented (preferably something like Docker image, virtual enviroment,
  or at worst, a list of dependencies and the package versions)?
  * Does the model fit in the technical constraints (technology used, memory consumption, training time,
- prediction time etc)?  
- 
-   *You may not be able to answer all of those questions at this point. Moreover,
-   some of the problems may be mitigated in at the stage of deploying the model, though it might be good
-   to start asking them early on.*
+ prediction time etc)?
+
+   *Production enviroment might be using a different setup, or even the model might get re-implemented,
+   but it might be useful to ask this question early on, to avoid surprises.*
 
 ### 4.5. Do you have tests for the model?
 
@@ -128,7 +131,7 @@ code.*
  * Is there a documented way to conduct a smoke test of the code, to make sure it doesn't fail?
  * Do you have functional tests proving that the model works reasonably, for a reasonably realistic data?
  * Do you have tests checking how does the model behave for extreme cases (e.g. zeroes, very low, or very high
- values, missing data, noise, adverserial examples)? 
+ values, missing data, noise, adverserial examples)?
 
 ## 5. Do you know everything to be able to safely deploy it?
 
@@ -143,7 +146,7 @@ code.*
  predictions pass some threshold, fall-back to rule-based system)?
  * What artifacts (e.g. model parameters) need to be saved? How and where would you store them?
  * How would you handle model versioning and data versioning?
- * What tests you will run on the code and how often?
+ * What tests you will run for the code? How often?
  * How would you deploy new version of the model (canary deployment, A/B testing)?
  * How often do you need to re-train the model? What is the upper bound ("at least") and
  lower bound ("not sooner than")?
@@ -158,28 +161,40 @@ code.*
 
    a. ***Ground truth evaluation**, where the predictions are compared to the labeled data,
       so that the drop in performance (model metrics, business metrics) would be observed
-      in case of drift.*   
-   b. ***Input Drift Detection** means monitoring the distribution of the data over time. 
-      This can be achieved by monitoring the summary statistics  (e.g. mean, standard deviation,
-      minimum, maximum), or using formal tests ([K-S tests][ks], [chi-squared tests][chisq])
-      to detect anomalies in the input data. Another possibility is using domain classifier,
-      i.e. a classification algorithm that tries to predict old vs new data, and if it is
-      successful, it suggests that the data might have changed.*  
-   
-   *For more details see Chapter 7 from the [Introducing MLOps][mlops-book] book.*
+      in case of drift.*  
+   b. ***Input Drift Detection** means monitoring the distribution of the data over time.
+      This can be achieved by:*  
+      - *Monitoring the summary statistics  (e.g. mean, standard deviation, minimum, maximum),
+      or using formal tests ([K-S tests][ks], [chi-squared tests][chisq]) to detect anomalies
+      in the input data.*  
+      - *Compare the distributions of predictions made by the model on old vs new data (K-S test).*  
+      - *Using domain classifier, i.e. a classification algorithm that tries to predict
+      old vs new data, and if it is successful, it suggests that the data might have
+      changed.*
 
- * Are there any potential feedback loops that need special monitoring? For example, 
- if you are recommending videos to the users based on their viewing history, users would
- be more likely watch the videos you are serving them as recommendations.
+   *For more details see Chapter 7 from the [Introducing MLOps][mlops-book] book and the
+   [A Primer on Data Drift & Drift Detection Techniques][drift-primer] whitepaper by Dataiku.*
+
+ * Are there any potential feedback loops that need special monitoring?
+ 
+   *For example, if you are recommending videos to the users based on their viewing history,
+   users would be more likely watch the videos you are serving them as recommendations.
+   As a consequence, your future data would be influenced by the recommendation algorithm,
+   so if you re-trained the algorithm on such data, you would be amplifying the recommendations
+   you already made.*
+
  * How would you be able to [access the metrics][metrics-jordan] (e.g. Kibana, Grafana, MLflow, Neptune)?
  * Who's going to monitor the metrics?
 
 ## 7. Can it be used?
 
- * Do the benefits of using the model outweigh the cost of developing and deploying it?
+*At least some of those considerations should, and will, be made before starting the project, but before
+deployment you should ask the questions one more time.*
+
+ * Do the benefits of using the model outweigh the cost of developing, deploying, and maintaining it?
  * What are the risks related to using the model (financial, business, legal, safety, reputational)?
  * Does using it comply with the regulations (e.g. [GDPR][gdpr])?
- * Did you make sure the model is not biased (e.g. race, gender)?
+ * Did you make sure the model is not biased (e.g. race, gender) or does not have any harmful side-effects?
  * If the model predictions would need to be audited (legal obligations), are you storing
  all the necessary artifacts (model code, parameters, data used for training)?
 
@@ -204,7 +219,7 @@ code.*
  [labeling]: https://course.fullstackdeeplearning.com/course-content/data-management/labeling
  [interpretable-ml]: https://christophm.github.io/interpretable-ml-book/
  [pdp]: https://christophm.github.io/interpretable-ml-book/pdp.html
- [shapley]: https://christophm.github.io/interpretable-ml-book/shapley.html 
+ [shapley]: https://christophm.github.io/interpretable-ml-book/shapley.html
  [evaluating-ml]: https://edu.heibai.org/evaluating-machine-learning-models.pdf
  [ks]: https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test
  [chisq]: https://en.wikipedia.org/wiki/Chi-squared_test
@@ -215,4 +230,6 @@ code.*
  [first-objective]: https://developers.google.com/machine-learning/guides/rules-of-ml#your_first_objective
  [data-leak]: https://www.kaggle.com/dansbecker/data-leakage
  [metrics-jordan]: https://www.jeremyjordan.me/ml-monitoring/
-  
+ [drift-primer]: https://pages.dataiku.com/data-drift-detection-techniques
+ [xy]: https://meta.stackexchange.com/questions/66377/what-is-the-xy-problem
+ [amz-resume-screen]: https://www.reuters.com/article/us-amazon-com-jobs-automation-insight-idUSKCN1MK08G
