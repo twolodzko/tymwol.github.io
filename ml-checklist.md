@@ -104,8 +104,8 @@ areas model explainability and fairness may be important as well, or at least us
 For more details check the [Interpretable Machine Learning][interpretable-ml] book by Christoph Molnar.*
 
  * Do the predictions resemble the real data (so-called [posterior predictive checks][ppc])? Are they realistic?
- * Are you able to explain the predictions ([partial dependence plots][pdp], subpopulation analysis, [Shapley values][shapley],
- what-if analysis)?
+ * Are you able to explain the predictions ([partial dependence plots][pdp], subpopulation analysis,
+ [Shapley values][shapley], what-if analysis)?
  * Did you check for biasses (e.g. gender, race)?
  * Did you manually check some of the misclassified examples? When does the model make mistakes?
 
@@ -142,8 +142,8 @@ code.*
  * What computational resources are needed (e.g. GPUs, memory)?
  * How does it interact with other services, or parts of the software? What could go wrong?
  * Do you know the requirements needed by it (e.g. package versions)?
- * Do you need to make any extra steps if the model makes anomalous predictions (e.g. if
- predictions pass some threshold, fall-back to rule-based system)?
+ * Do you need to make any extra steps if the model makes anomalous predictions (e.g. truncate them,
+ or if predictions pass some threshold, fall-back to rule-based system)?
  * What artifacts (e.g. model parameters) need to be saved? How and where would you store them?
  * How would you handle model versioning and data versioning?
  * What tests you will run for the code? How often?
@@ -194,7 +194,7 @@ deployment you should ask the questions one more time.*
  * Do the benefits of using the model outweigh the cost of developing, deploying, and maintaining it?
  * What are the risks related to using the model (financial, business, legal, safety, reputational)?
  * Does using it comply with the regulations (e.g. [GDPR][gdpr])?
- * Did you make sure the model is not biased (e.g. race, gender) or does not have any harmful side-effects?
+ * Did you make sure the model is not biased (e.g. race, gender) and does not have any harmful side-effects?
  * If the model predictions would need to be audited (legal obligations), are you storing
  all the necessary artifacts (model code, parameters, data used for training)?
 
