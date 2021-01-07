@@ -107,6 +107,34 @@ $ echo "${arr[@]}"
 ```
 
 
+https://stackoverflow.com/a/16753536/3986320
+
+```
++--------------------+----------------------+-----------------+-----------------+
+|   Expression       |  FOO="world"         |     FOO=""      |    unset FOO    |
+|   in script:       |  (Set and Not Null)  |  (Set But Null) |     (Unset)     |
++--------------------+----------------------+-----------------+-----------------+
+| ${FOO:-hello}      | world                | hello           | hello           |
+| ${FOO-hello}       | world                | ""              | hello           |
+| ${FOO:=hello}      | world                | FOO=hello       | FOO=hello       |
+| ${FOO=hello}       | world                | ""              | FOO=hello       |
+| ${FOO:?hello}      | world                | error, exit     | error, exit     |
+| ${FOO?hello}       | world                | ""              | error, exit     |
+| ${FOO:+hello}      | hello                | ""              | ""              |
+| ${FOO+hello}       | hello                | hello           | ""              |
++--------------------+----------------------+-----------------+-----------------+
+```
+
+
+https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html
+
+ * `${var#pattern}` `${var##pattern}`
+ * `${var%pattern}` `${var%%pattern}`
+ * `${var/pattern/replacement/}` `${var//pattern/replacement/}`
+ * `${var:offset}` `${var:offset:length}`
+ * `${var^}` `${var^^}`
+ * `${var,}` `${var,,}`
+
 
 ```shell
 $ files=$(ls)
