@@ -1,7 +1,8 @@
 ---
-layout: post
-title:  "Deploying Machine Learning Models: A Checklist"
-date:   2021-01-05
+layout:        post
+title:         "Deploying Machine Learning Models: A Checklist"
+date:          2021-01-05
+modified_date: 2021-01-08 
 ---
 
 In [The Checklist Manifesto][checklist], Atul Gawande shows how using checklists can make everyone's
@@ -10,13 +11,15 @@ use them to help us with deploying machine learning models as well. While most o
 obvious, it's easy to forget them, or leave them for "somebody" to do "later". In many cases, skipping those
 steps will sooner or later lead to problems, hence it's good to have them as a checklist.
 
-When creating the checklist, I used many different resources, including [Introducing MLOps][mlops-book]
+For more details, you can check resources like [Introducing MLOps][mlops-book]
 book by Mark Treveil et al, [Building Machine Learning Powered Applications][ml-powered]
 book by Emmanuel Ameisen, the free [Full Stack Deep Learning][fsdl] course,
 [Rules of Machine Learning][ml-rules] document by Martin Zinkevich,
 [ML Ops: Operationalizing Data Science][mlops-report] report by David Sweenor et al,
-the [Responsible Machine Learning][responsible-ml-report] report by Patrick Hall et al, and
-the [Continuous Delivery for Machine Learning][cd-for-ml] article by Danilo Sato et al.
+the [Responsible Machine Learning][responsible-ml-report] report by Patrick Hall et al,
+the [Continuous Delivery for Machine Learning][cd-for-ml] article by Danilo Sato et al,
+[Machine Learning Systems Design][ml-systems-design] page by Chip Huyen, and the
+[ml-ops.org](https://ml-ops.org/) webpage.
 
 ## 1. What problem are you trying to solve?
 
@@ -64,8 +67,8 @@ you aim to solve some problem, rather than to play the metric at all costs.*
 
 *[Lean Startup][lean] has introduced the idea of the [minimum viable product (MVP)][mvp], the simplest solution that
 "does the job". Before building a full-blown machine learning model, first try the cheap and easy solution like
-rule-based system, decision tree, linear regression, etc. This would help with framing the problem, can be used
-to gather initial feedback ("is this what you need?"), and would serve as a baseline. Emmanuel Ameisen
+rule-based system, decision tree, linear regression, etc. This would help with framing the problem, can be [used
+to gather initial feedback][ml-product] ("is this what you need?"), and would serve as a baseline. Emmanuel Ameisen
 makes similar points in [his book][ml-powered], and in [this blog post][solve-nlp], there's also a nice
 [talk about the baselines][baselines].*
 
@@ -240,3 +243,5 @@ webpage by Google.*
  [responsible-ai-practices]: https://ai.google/responsibilities/responsible-ai-practices/
  [goodhart-law]: https://www.fast.ai/2019/09/24/metrics/
  [population]: https://pubmed.ncbi.nlm.nih.gov/23216426/
+ [ml-product]: https://www.jeremyjordan.me/ml-requirements/
+ [ml-systems-design]: https://huyenchip.com/machine-learning-systems-design/toc.html
