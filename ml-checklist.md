@@ -2,7 +2,7 @@
 layout:        post
 title:         "Deploying Machine Learning Models: A Checklist"
 date:          2021-01-05
-modified_date: 2021-01-08 
+modified_date: 2021-01-12
 ---
 
 In [The Checklist Manifesto][checklist], Atul Gawande shows how using checklists can make everyone's
@@ -95,7 +95,7 @@ the model.*
 
 *See the [Evaluating Machine Learning Models][evaluating-ml] book by Alice Zheng.*
 
- * Does the code run  (e.g. the Jupyter notebook does not crash)?
+ * Does the code run  (e.g. the Jupyter notebook [does not crash][jupyter-fail])?
  * Was it proven that the model solves the problem you were trying to solve?
  * What metrics should be used to assess the performance of the model? Is the performance acceptable?
  * Did you check for overfitting?
@@ -245,3 +245,5 @@ webpage by Google.*
  [population]: https://pubmed.ncbi.nlm.nih.gov/23216426/
  [ml-product]: https://www.jeremyjordan.me/ml-requirements/
  [ml-systems-design]: https://huyenchip.com/machine-learning-systems-design/toc.html
+ [jupyter-fail]: https://blog.jetbrains.com/datalore/2020/12/17/we-downloaded-10-000-000-jupyter-notebooks-from-github-this-is-what-we-learned/
+
