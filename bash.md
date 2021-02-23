@@ -1,44 +1,52 @@
-# Bash
+---
+layout: post
+title:  "Bash crash course"
+date:   2021-02-23
+---
 
-`/bin/bash` and `/bin/sh` [are *not*](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash) the same.
+I can recommend the [Bash Pocket Reference](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/) book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/) cheetsheet from the [⭐ wizard zines ⭐](https://wizardzines.com/comics/)
+series by Julia Evans ([@b0rk](https://twitter.com/b0rk)).
 
-```sh
-~: sh
-$ echo "Default shell is: '$SHELL', but currently I am using '$0'"
-Default shell is: '/bin/bash', but currently I am using 'sh'
-$
-~: dash
-$ echo "Default shell is: '$SHELL', but currently I am using '$0'"
-Default shell is: '/bin/bash', but currently I am using 'dash'
-$
-~: fish
-Welcome to fish, the friendly interactive shell
-Type `help` for instructions on how to use fish
-$ echo "Default shell is: '$SHELL', but currently I am using '$0'"
-Default shell is: '/bin/bash', but currently I am using ''
-```
+## What is `/bin/sh`?
 
-```sh
+People often wonder if `/bin/sh` and `/bin/bash` are the same, [they are *not*](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash). `/bin/sh` is just a symbolic link to actual implementation of the shell, e.g. `Bash`, or `Dash`. To check what is your default shell use `echo "$SHELL"`. Bacause the shells may differ in details of the implementation, make sure to start bash scripts with the [shebang](https://github.com/koalaman/shellcheck/wiki/SC2148):
+
+```bash
 #!/bin/bash
 ```
 
+Bash [should, but does not have to](https://stackoverflow.com/questions/4814006/can-i-assume-bash-is-installed), be installed on all machines, so this is a rather safe choice. If unsure, use `#!/bin/sh`, but in such case you need to remember that the shell you'll be using would not guarantee to provide all the functionalities of Bash, only the the basic ones defined by [POSIX](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html) standard.
+
 ## Hello World!
 
-```sh
+To print, you can use either `echo`, or `printf` (formatted).
+
+```shell
 $ echo "Hello World!"
 Hello World!
-$ printf "Hello %s\n" "World!"
-Hello World!
-```
-
-```sh
 $ printf "%.2f\n" 1,12345
 1,12
 $ printf "%s went to the %s and bought a %s\n" Jack shop lollypop
 Jack went to the shop and bought a lollypop
 ```
 
+In Bash you [don't really](https://unix.stackexchange.com/questions/68694/when-is-double-quoting-necessary) need to
+quote the printed strings, but it is generally considered as a good practice to do so. Quotes improve readability, make
+the code more fool proof, and may be needed if the script will be evaluated using shells other than Bash. If you would
+use [shellcheck](#Shellcheck) for validating the script, it will always complain about variables that are not quoted,
+since it [may lead to problems](https://github.com/koalaman/shellcheck/wiki/SC2086). When quoting strings, double quotes
+`"` will evaluate the variables, while single quotes, will take the string as-is.
+
+```shell
+$ echo "$PWD"
+/my/current/path
+$ echo '$PWD'
+$PWD
+```
+
 ## Functions
+
+Functions in Bash are quite different from you may know from other programming (scripting?) languages. They don't include inputs in their definitions, instead they can read any number of positional arguments accessed by `$1`, `$2`, ... , `${10}`, ... etc. `$0` is reserved for the [name of the shell, or the shell script that contains the code](https://bash.cyberciti.biz/guide/$0).
 
 ```shell
 $ hello() {
@@ -47,6 +55,8 @@ $ hello() {
 $ hello "Tim"
 Hello Tim!
 ```
+
+To access all elements, you can use `$@`.
 
 ```shell
 $ first() { echo "$1"; }
@@ -60,9 +70,27 @@ $ tail 1 2 3
 2 3
 ```
 
-`$0` is the name of the command that was called, `$1` is the first argument, `$2` is the second, etc. There is also `$@` that holds all the arguments.
+and `$#` holds the number of the arguments that were passed to the function.
+
+```shell
+$ count () { echo "$#"; }
+$ count a b c
+3
+```
+
+Remember to use semicolon `;` when writing multiple commands in single line, this also applies to `if ...; then`, `for ...; do`, and if closing the curly braces in the same line `...; }`.
+
+Functions can also use `read` command to access files, or [collect input from the user](https://stackoverflow.com/questions/18544359/how-to-read-user-input-into-a-variable-in-bash).
+
+Functions in Bash not only do not mention input arguments explicitely, but also do not return anything but the [exit
+status](https://en.wikipedia.org/wiki/Exit_status). To terminate a function with an exit code use `exit 0` for success,
+or any non-zero status, e.g. `exit 1` for error. Exit status of the most recently exacuted command is available through
+the `$?` variable. To communicate with outside world, the functions can use side effects like printing to
+[stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving results to files.
 
 ## Variables
+
+To assign a local variable, use `=` without any spaces before or after it. The variables can be accessed by prefixing their name with `$`.
 
 ```shell
 $ x = 2
@@ -74,6 +102,21 @@ $ echo "$x"
 2
 ```
 
+Alternatively, you can use `${}` to access the variable, it may be [useful when creating a string using a variable](https://stackoverflow.com/questions/8748831/when-do-we-need-curly-braces-around-shell-variables)
+
+```shell
+$ foobar="hello!"
+$ foo="Whiskey "
+$ echo "$foobar"
+hello!
+$ echo "$foo"bar
+Whiskey bar
+$ echo "${foo}bar"
+Whiskey bar
+```
+
+The variable can be freed by using `unset`
+
 ```shell
 $ x=1
 $ echo "x=$x"
@@ -83,7 +126,7 @@ $ echo "x=$x"
 x=
 ```
 
-You can also define constants, that cannot be deleted, or altered:
+You can also define constants, that cannot be deleted, or altered
 
 ```shell
 $ readonly PI=3.14
@@ -95,19 +138,15 @@ $ unset PI
 sh: 6: unset: PI: is read only
 ```
 
-```shell
-$ arr=(1 2 3)
-$ echo "${arr[0]}"
-1
-$ echo "${arr[@]}"
-1 2 3
-$ arr+=(4 5)
-$ echo "${arr[@]}"
-1 2 3 4 5
-```
+Additionally, you can use `export` to [make the variable available also to the child processes](https://superuser.com/questions/153371/what-does-export-do-in-bash). There is a nice [guide on Bash variables](https://www.cyberciti.biz/faq/set-environment-variable-linux/)
+that goes into more details.
 
+## Operations on the variables
 
-https://stackoverflow.com/a/16753536/3986320
+Bash does not check if variable exists when asking for it's value, so `echo $xsSXSaa` would print empty string, even
+if you never defined the `xsSXSaa` variable. Instead, it has [very advanced syntax](https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html) for interacting with variables. If variable does not have any assigned value,
+you can use `${variable:-default}` to return the `default` value instead, or `${variable:=default}` to *assign* and
+return the value. Other expressions are summarized in the table below taken from [this StackOverflow answer](https://stackoverflow.com/a/16753536/3986320).
 
 ```
 +--------------------+----------------------+-----------------+-----------------+
@@ -125,127 +164,79 @@ https://stackoverflow.com/a/16753536/3986320
 +--------------------+----------------------+-----------------+-----------------+
 ```
 
+Additionally, Bash offers syntax for operating strings stored in the variables (everything is a string for Bash):
 
-https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html
+ * to remove pattern from the beginning of the string: `${var#pattern}`, `${var##pattern}`,
+ * to remove pattern from the back of the string: `${var%pattern}`, `${var%%pattern}`,
+ * to substitute a pattern: `${var/pattern/replacement/}`, or all it's occurences `${var//pattern/replacement/}`,
+ * to access substring `${var:offset}`, `${var:offset:length}`
+ * convert first `${var^}`, or all `${var^^}` characters to uppercase,
+ * convert first `${var,}`, or all `${var,,}` characters to lowercase.
 
- * `${var#pattern}` `${var##pattern}`
- * `${var%pattern}` `${var%%pattern}`
- * `${var/pattern/replacement/}` `${var//pattern/replacement/}`
- * `${var:offset}` `${var:offset:length}`
- * `${var^}` `${var^^}`
- * `${var,}` `${var,,}`
+## Arrays
 
-
-```shell
-$ files=$(ls)
-```
-
-[guide of variables](https://www.cyberciti.biz/faq/set-environment-variable-linux/)
-
-You can also use ``` `...` ``` instead of `$(...)` but [it's *not* recommended](https://mywiki.wooledge.org/BashFAQ/082)
-and Shellcheck would complain.
-
-
-`export` is used [to set enviroment variables](https://superuser.com/questions/153371/what-does-export-do-in-bash), that
-are available to other processes
+Arrays can be created using round brackets. They are zero-indexed and the elements can be accessed using `${}`.
 
 ```shell
-export FOO
-FOO=1
-export BAR=2
+$ arr=(1 2 3)
+$ echo "${arr[0]}"
+1
+$ echo "${arr[@]}"
+1 2 3
+$ arr+=(4 5)
+$ echo "${arr[@]}"
+1 2 3 4 5
 ```
 
+You can also iterate over the elements using a `for` loop.
 
-```shell
-$ if [ $((2+2)) -eq 4 ]; then
->   echo "wow! math works!"
-> fi
-wow! math works!
-```
-
-
-```shell
-$ for name in "one" "two" "three"; do
->   echo "$name"
-> done
-one
-two
-three
-```
-
-```sh
-while ...; do
-  ...
+```bash
+arr=(1 2 3)
+for x in "${arr[@]}"; do
+    echo "$x"
 done
 ```
 
-```shell
-$ die() {
->   exit 1
-> }
-$ die
-$ echo $?
-1
-```
-
+Using curly brackets, you can create sequences `${start..end..step}`.
 
 ```shell
-$ cat << EOF > test.sh
-> #!/bin/bash
-> foo
-> bar
-> echo "Done!"
-> EOF
-$ bash test.sh
-./test.sh: line 1: foo: command not found
-./test.sh: line 2: bar: command not found
-Done!
+$ echo {1..5}
+1 2 3 4 5
+$ echo {5..1..-2}
+5 3 1
+$ echo {a..z..3}
+a d g j m p s v y
 ```
+
+When using multiple curly brackets to create a string, it will create *all the combinations* of the possible strings. This can be used together with other commands, for example to create or remove multiple files.
 
 ```shell
-$ cat << EOF > test.sh
-> #!/bin/bash
-> set -e
-> foo
-> bar
-> echo "Done!"
-> EOF
-$ bash test.sh
-test.sh: line 2: foo: command not found
+$ touch file_{1..3}{a..c}.{txt,md}
+$ ls file*
+file_1a.md   file_1b.md   file_1c.md   file_2a.md   file_2b.md   file_2c.md   file_3a.md   file_3b.md   file_3c.md
+file_1a.txt  file_1b.txt  file_1c.txt  file_2a.txt  file_2b.txt  file_2c.txt  file_3a.txt  file_3b.txt  file_3c.txt
 ```
 
-[the `<<EOF` trick](https://stackoverflow.com/questions/2500436/how-does-cat-eof-work-in-bash)
+## Conditional statements
 
-```shell
-$ cat << gummybear
-> hi
-> this is a
-> gummybear
-hi
-this is a
-```
+In Bash you can use two different kinds of methods for evaluating logical expressions `[` and `[[`. This can be very
+confusing at first, since in some cases they have different behavior. There is a great comparison of those operators in
+[this StackOverflow answer](https://stackoverflow.com/a/47576482/3986320), and in [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs) that discusses additionally the use of `(` and `((`. More
+details can be found in the man page of [test](https://linux.die.net/man/1/test). TL;DR you can safely use single `[`,
+unless you need some specific functionalities of the extended operator `[[`. 
 
+In Bash `&` and `|` are binary AND and OR operators, for logical operators use instead `&&`, `||`, and `!` for negation.
+Additionally, `&&` is commonly used for chaning operations, e.g. `sudo apt update && sudo apt upgrade`, in such case
+the chain of operations fails at first failure because of using `&&` that is [lazily evaluated](https://en.wikipedia.org/wiki/Lazy_evaluation).
 
-[*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/) from the [⭐ wizard zines ⭐](https://wizardzines.com/comics/)
-series by Julia Evans ([@b0rk](https://twitter.com/b0rk))
+It is useful to know some basic checks: `-z` empty string, `-n` non-empty
+string, `-d` directory exists, `-f` file exists, `-s` file is non-empty,
+`-x` executable file exists. Strings can be compared using the `=`, `!=`, `<`, `>`, operators, but beware of using `==` that [behaves differently](https://kapeli.com/cheat_sheets/Bash_Test_Operators.docset/Contents/Resources/Documents/index)
+when used in `[` and `[[`. For comparing numeric values use instead `-eq` equal, `-ne` not equal, `-lt` lower than,
+`-le` less or equal, `-gt` greater than, `-ge` greater or equal. Alternatively, the `==`, `!=`, `<`, `<=`, `>`, `>=`
+operators can be used in double round brackets to compare numeric values e.g. `(( 2 < 3 ))` is equivalent to `[ 2 -lt 3 ]`.
 
-[](https://twitter.com/b0rk/status/1314345978963648524)
-
-```bash
-set -euo pipefail
-```
-
-[has pitfails](https://mywiki.wooledge.org/BashPitfalls#set_-euo_pipefail)
-
-https://github.com/koalaman/shellcheck
-
-
-
-
-
-
-[great `[` vs `[[` comparison](https://stackoverflow.com/a/47576482/3986320), and [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs)
-
+## Control flow
 
 The control flow commands use their names inverted for closing the blocks, so there is `if ... fi` and `case ... esac`. 
 
@@ -258,6 +249,14 @@ fi
 ```
 
 
+```shell
+$ if [ $(( 2 + 2 )) -eq 4 ]; then
+>   echo "wow! math works!"
+> fi
+wow! math works!
+```
+
+For checking multiple conditions, you can use the `case ... in` syntax.
 
 ```bash
 case $variable in
@@ -279,10 +278,105 @@ ia [a cool trick](https://unix.stackexchange.com/a/75356/91505), that you can us
 cases following the matched pattern, or `;;&` to be able to match multiple patterns.
 
 
+## `for` and `while` loops
+
+The `for` loop can either be used to iterate over explicitely listed elements
+
+```shell
+$ for name in "one" "two" "three"; do
+>   echo "$name"
+> done
+one
+two
+three
+```
+
+or outputs of commands and arrays (see [Arrays](#Arrays))
 
 ```bash
-for value in 1 2 3
-do
-    echo $value
+for f in "$(ls)"; do
+    echo "$f"
 done
 ```
+
+For iterating until brake condition is met, use `while` loop. The popular use case is [iterating over lines of a file](https://stackoverflow.com/a/10929511/3986320).
+
+```bash
+while IFS= read -r line; do
+    echo "Text read from file: $line"
+done < my_filename.txt
+```
+
+## Evaluating expressions
+
+To evaluate an expression you can use ``` `...` ``` or `$(...)`, but using `$(...)` [is recommended](https://mywiki.wooledge.org/BashFAQ/082).
+
+```shell
+cmd='date'
+echo "$("$cmd")"
+Tue 23 Feb 14:56:12 CET 2021 
+```
+
+To evaluate math expressions, use double round brackets.
+
+```shell
+$ echo "$( 2 + 2 )"
+2: command not found
+$ echo "$(( 2 + 2 ))"
+4
+```
+
+## Background & parallel processes
+
+To start two simultaneous processes, just combine them with `&`.
+
+```bash
+command1 &
+command2
+```
+
+You can [initialize multiple processes from a `for` loop](https://stackoverflow.com/a/5238146/3986320).
+
+
+```bash
+echo "Spawning 100 processes"
+for i in {1..100}; do
+    ( ./my_script & )
+; done
+```
+
+To display list of active jobs use `jobs` command.  `fg [job_spec]` moves job to foreground, Ctrl+Z or `bg [job_spec]` to background, `disown [job_spec]` terminates it. To prevent the processess from dying with the shell being closed, you can use the "no hangup" `nohup` command.
+
+
+Those commands are build-in and do not have `man` pages, so use `fg --help` or `help fg` for details. To list all the build-in commands use `help`.
+
+## Debugging
+
+To run a Bash script in [debug mode](https://tldp.org/LDP/Bash-Beginners-Guide/html/sect_02_03.html) use `bash -x script.sh`. The debug mode can also be activated for choosen lines in a script by encapsulating them in `set -x` and `set +x`
+
+Since Bash by default does not fail but consinues running (to read more on the `EOF` trick, check [this thread](https://stackoverflow.com/questions/2500436/how-does-cat-eof-work-in-bash)). 
+
+```shell
+$ cat << EOF > test.sh
+> #!/bin/bash
+> foo
+> bar
+> echo "Done!"
+> EOF
+$ bash test.sh
+./test.sh: line 1: foo: command not found
+./test.sh: line 2: bar: command not found
+Done!
+```
+
+To turn this behaviour off, you [can add](https://twitter.com/b0rk/status/1314345978963648524) the following line in the beginning of your script:
+
+```bash
+set -euo pipefail
+```
+
+notice however that using it [has some pitfails](https://mywiki.wooledge.org/BashPitfalls#set_-euo_pipefail), so don't use it blindly.
+
+## Shellcheck
+
+To prevent bugs in Bash scripts, you can use the open source [shellcheck](https://github.com/koalaman/shellcheck) tool. It conducts a static analysis of a Bash script and provides many helpful hints for solving the issues.
