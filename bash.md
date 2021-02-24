@@ -21,7 +21,7 @@ book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/
 you need more advanced features than described below, then maybe you need some other tool than Bash for solving your
 problem?
 
-## What is `/bin/sh`?
+# What is `/bin/sh`?
 
 People often wonder if `/bin/sh` and `/bin/bash` is the same and [the answer is *no*](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash). `/bin/sh` is just a symbolic link to `Bash`, or `Dash`, etc. To check what is your
 default shell use `echo "$SHELL"`. To change your default shell, use the [`chsh` utility](https://www.tecmint.com/change-a-users-default-shell-in-linux/).
@@ -36,7 +36,7 @@ installed on all machines, so this is a safe choice. If unsure, use `#!/bin/sh`,
 remember that the shell you'll be using would not guarantee to provide all the functionalities of Bash, only the
 basic ones defined by [POSIX](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html) standard.
 
-## Hello World!
+# Hello World!
 
 To print, you can use either `echo`, or `printf` (formatted).
 
@@ -63,7 +63,7 @@ $ echo '$PWD'
 $PWD
 ```
 
-## Variables
+# Variables
 
 To assign a local variable, use `=` without any spaces before or after it. The variables can be accessed by prefixing their name with `$`.
 
@@ -116,7 +116,7 @@ sh: 6: unset: PI: is read only
 Additionally, you can use `export` to [make the variable available also to the child processes](https://superuser.com/questions/153371/what-does-export-do-in-bash). There is a nice [guide on Bash variables](https://www.cyberciti.biz/faq/set-environment-variable-linux/)
 that goes into more details.
 
-## Operations on the variables
+# Operations on the variables
 
 Bash does not check if the variable exists when asking for its value, so `echo $xsSXSaa` would print an empty string,
 even if you never defined the `xsSXSaa` variable. Instead, it has a [very advanced syntax](https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html) for interacting with variables. If the variable does not have an assigned
@@ -141,14 +141,14 @@ and return the value. Other expressions are summarized in the table below taken 
 
 Additionally, Bash offers syntax for operating strings stored in the variables (everything is a string for Bash):
 
- * to remove pattern from the beginning of the string: `${var#pattern}`, `${var##pattern}`,
+ * to remove pattern from the beginning of the string: `${var#pattern}`, `${var#pattern}`,
  * to remove pattern from the back of the string: `${var%pattern}`, `${var%%pattern}`,
  * to substitute a pattern: `${var/pattern/replacement/}`, or all it's occurences `${var//pattern/replacement/}`,
  * to access substring `${var:offset}`, `${var:offset:length}`
  * convert first `${var^}`, or all `${var^^}` characters to uppercase,
  * convert first `${var,}`, or all `${var,,}` characters to lowercase.
 
-## Arrays
+# Arrays
 
 Arrays can be created using round brackets. They are zero-indexed and the elements can be accessed using `${}`.
 
@@ -192,7 +192,7 @@ file_1a.md   file_1b.md   file_1c.md   file_2a.md   file_2b.md   file_2c.md   fi
 file_1a.txt  file_1b.txt  file_1c.txt  file_2a.txt  file_2b.txt  file_2c.txt  file_3a.txt  file_3b.txt  file_3c.txt
 ```
 
-## Conditional statements
+# Conditional statements
 
 In Bash, you can use two different kinds of methods for evaluating logical expressions `[` and `[[`. This can be very confusing at first since they can behave differently.  [This StackOverflow answer](https://stackoverflow.com/a/47576482/3986320)
 compares those operators, and in [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs) that discusses additionally the use of `(` and `((`. More
@@ -210,7 +210,7 @@ when used in `[` and `[[`. For comparing numeric values use instead `-eq` equal,
 `-le` less or equal, `-gt` greater than, `-ge` greater or equal. Alternatively, the `==`, `!=`, `<`, `<=`, `>`, `>=`
 operators can be used in double round brackets to compare numeric values e.g. `(( 2 < 3 ))` is equivalent to `[ 2 -lt 3 ]`.
 
-## Control flow
+# Control flow
 
 The control flow commands use their names inverted for closing the blocks, so there is `if ... fi` and `case ... esac`. 
 
@@ -251,7 +251,7 @@ is [a cool trick](https://unix.stackexchange.com/a/75356/91505), that you can us
 cases following the matched pattern, or `;;&` to be able to match multiple patterns.
 
 
-## `for` and `while` loops
+# `for` and `while` loops
 
 The `for` loop can either be used to iterate over explicitly listed elements
 
@@ -280,7 +280,7 @@ while IFS= read -r line; do
 done < my_filename.txt
 ```
 
-## Evaluating expressions
+# Evaluating expressions
 
 To evaluate an expression you can use ``` `...` ``` or `$(...)`, but using `$(...)` [is recommended](https://mywiki.wooledge.org/BashFAQ/082).
 While the quotes in the example below might look awkward, this is a [valid approach in Bash](https://unix.stackexchange.com/questions/118433/quoting-within-command-substitution-in-bash), since variables need to be quoted and the whole
@@ -301,7 +301,7 @@ $ echo "$(( 2 + 2 ))"
 4
 ```
 
-## Functions
+# Functions
 
 Functions in Bash are quite different from what you may know from another programming (scripting?) languages. They don't
 include inputs in their definitions, instead, but use positional arguments accessed by `$1`, `$2`,
@@ -346,7 +346,7 @@ status](https://en.wikipedia.org/wiki/Exit_status). To provide an exit code use 
 or any non-zero status, like `exit 1` for error. The exit status of the most recently executed command is available
 through the `$?` variable. To communicate with the outside world, they use side effects like printing to [stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving files.
 
-## Scripts
+# Scripts
 
 Bash code often comes not as functions, but as scripts. The scripts behave like functions, so if you create the
 `hello.sh` script, you can call it by invoking its name `./hello.sh`, you can also provide positional arguments like
@@ -398,7 +398,7 @@ $ ./hello.sh Tim
 Hello Tim!
 ```
 
-## Background & parallel processes
+# Background & parallel processes
 
 To start two simultaneous processes, just combine them with `&`.
 
@@ -425,7 +425,7 @@ being closed, you can use the "no hangup" `nohup` command.
 Those commands are build-in and do not have `man` pages, so use `fg --help` or `help fg` for details. To list all
 the build-in commands use `help`.
 
-## Debugging and testing
+# Debugging and testing
 
 To run a Bash script in [debug mode](https://tldp.org/LDP/Bash-Beginners-Guide/html/sect_02_03.html) use
 `bash -x script.sh`. The debug mode can also be activated for chosen lines in a script by encapsulating them in
