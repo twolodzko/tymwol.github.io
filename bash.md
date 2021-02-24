@@ -52,7 +52,7 @@ Jack went to the shop and bought a lollypop
 In Bash, you [don't really](https://unix.stackexchange.com/questions/68694/when-is-double-quoting-necessary) need to
 quote the printed strings, but it is generally considered a good practice. Quotes improve readability, make
 the code more foolproof, and might be needed if the script will be evaluated using shells other than Bash. If you would
-use [shellcheck](#Shellcheck) for validating the script, it will always complain about variables that are not quoted,
+use [shellcheck](#Debugging-and-testing) for validating the script, it will always complain about variables that are not quoted,
 since it [may lead to problems](https://github.com/koalaman/shellcheck/wiki/SC2086). When quoting strings, double quotes
 `"` will evaluate the variables, while single quotes, will take the string as-is.
 
@@ -383,7 +383,7 @@ parsing the arguments.
 The help gets printed when using the `-h` or `--help` flag and then the scripts exits with status `0` (success). There is
 no standard format for the documentation, though there is a [popular convention](https://stackoverflow.com/questions/9725675/is-there-a-standard-format-for-command-line-shell-help-text) that optional arguments are described in square brackets and alternatives are separated with `|`.
 
-If you save the script to the `hello.sh` file, next, you can [validate it with `shellcheck`](#Shellcheck), make it
+If you save the script to the `hello.sh` file, next, you can [validate it with `shellcheck`](#Debugging-and-testing), make it
 executable, and run it.
 
 ```shell
@@ -426,7 +426,7 @@ being closed, you can use the "no hangup" `nohup` command.
 Those commands are build-in and do not have `man` pages, so use `fg --help` or `help fg` for details. To list all
 the build-in commands use `help`.
 
-## Debugging
+## Debugging and testing
 
 To run a Bash script in [debug mode](https://tldp.org/LDP/Bash-Beginners-Guide/html/sect_02_03.html) use
 `bash -x script.sh`. The debug mode can also be activated for chosen lines in a script by encapsulating them in
@@ -458,7 +458,7 @@ set -euo pipefail
 notice that using it [has some pitfalls](https://mywiki.wooledge.org/BashPitfalls#set_-euo_pipefail), so don't
 use it blindly.
 
-## Shellcheck
+To discover common bugs and code smells in Bash scripts, you can use the [open-source `shellcheck` tool](https://github.com/koalaman/shellcheck).
+It conducts static analysis of the script and provides many helpful hints for solving the issues.
 
-To prevent bugs in Bash scripts, you can use the open-source [shellcheck](https://github.com/koalaman/shellcheck) tool.
-It conducts a static analysis of a Bash script and provides many helpful hints for solving the issues.
+If you want to add unit tests to your code, there is a [useful `assert.sh` script](https://torokmark.github.io/assert.sh/).
