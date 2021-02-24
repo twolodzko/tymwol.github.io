@@ -52,7 +52,7 @@ Jack went to the shop and bought a lollypop
 In Bash, you [don't really](https://unix.stackexchange.com/questions/68694/when-is-double-quoting-necessary) need to
 quote the printed strings, but it is generally considered a good practice. Quotes improve readability, make
 the code more foolproof, and might be needed if the script will be evaluated using shells other than Bash. If you would
-use [shellcheck](#Debugging-and-testing) for validating the script, it will always complain about variables that are not quoted,
+use `shellcheck` for validating the script, it will always complain about variables that are not quoted,
 since it [may lead to problems](https://github.com/koalaman/shellcheck/wiki/SC2086). When quoting strings, double quotes
 `"` will evaluate the variables, while single quotes, will take the string as-is.
 
@@ -382,7 +382,7 @@ parsing the arguments.
 The help gets printed when using the `-h` or `--help` flag and then the scripts exits with status `0` (success). There is
 no standard format for the documentation, though there is a [popular convention](https://stackoverflow.com/questions/9725675/is-there-a-standard-format-for-command-line-shell-help-text) that optional arguments are described in square brackets and alternatives are separated with `|`.
 
-If you save the script to the `hello.sh` file, next, you can [validate it with `shellcheck`](#Debugging-and-testing), make it
+If you save the script to the `hello.sh` file, next, you can validate it with `shellcheck`, make it
 executable, and run it.
 
 ```shell
