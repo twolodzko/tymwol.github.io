@@ -1,19 +1,25 @@
 ---
 layout: post
-title:  "Bash crash course"
+title:  "Bash pocket guide"
 date:   2021-02-23
 ---
 
+Bash is like regular expressions: everyone uses it, nobody knows it well. Every time I need to write Bash, I find
+myself googling a lot. The main purpose for writing this guide is to gather in a single
+place the things I google most often.
+
 People usually don't like Bash. I agree, it is not pretty and has many strange quirks. But Bash is useful if you
 are running a Unix machine (Docker anyone?). While in most cases you could replace Bash with your favorite programming
-language to do the same things, using few lines of Bash could lead to a much simpler code. For me, Bash is useful for
+language, using few lines of Bash could lead to a much simpler code. For me, Bash is useful for
 automating repeated tasks like "download this, do something to those files, call this script, ...". Bash would be almost
 always available on the machine, so it is portable (no problems with dependencies!). It is also simple enough that
-others would easily understand what your code is doing. Bash is a tool for those fast-and-dirty tasks we often need on
-day to day basis.
+others would easily understand what your code is doing. Bash is a tool for those fast-and-dirty tasks we often need to do on day to day basis.
 
-If you are looking for references on Bash, I recommend the [Bash Pocket Reference](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/) book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/)
-cheatsheet from the [⭐ wizard zines ⭐](https://wizardzines.com/comics/) series by Julia Evans ([@b0rk](https://twitter.com/b0rk)).
+If you are looking for more references on Bash, I recommend the [Bash Pocket Reference](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/)
+book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/) cheatsheet from the
+[⭐ wizard zines ⭐](https://wizardzines.com/comics/) series by Julia Evans ([@b0rk](https://twitter.com/b0rk)). If
+you need more advanced features than described below, then maybe you need some other tool than Bash for solving your
+problem?
 
 ## What is `/bin/sh`?
 
@@ -57,51 +63,6 @@ $ echo '$PWD'
 $PWD
 ```
 
-## Functions
-
-Functions in Bash are quite different from what you may know from another programming (scripting?) languages. They don't
-include inputs in their definitions, instead, but use positional arguments accessed by `$1`, `$2`,
-... , `${10}`, ... etc. `$0` is reserved for the [name of the shell, or the shell script that contains the code](https://bash.cyberciti.biz/guide/$0).
-
-```shell
-$ hello() {
->   echo "Hello $1!"
-> }
-$ hello "Tim"
-Hello Tim!
-```
-
-To access all elements, you can use `$@`.
-
-```shell
-$ first() { echo "$1"; }
-$ first 1 2 3
-1
-$ all() { echo "$@"; }
-$ all 1 2 3
-1 2 3
-$ tail() { shift; echo "$@"; }
-$ tail 1 2 3
-2 3
-```
-
-and `$#` holds the number of the arguments that were passed to the function.
-
-```shell
-$ count () { echo "$#"; }
-$ count a b c
-3
-```
-
-Remember to use semicolon `;` when writing multiple commands in single line, this also applies to `if ...; then`, `for ...; do`, and if closing the curly braces in the same line `...; }`.
-
-Functions can also use `read` command to access files, or [collect input from the user](https://stackoverflow.com/questions/18544359/how-to-read-user-input-into-a-variable-in-bash).
-
-Functions in Bash do not return anything but the [exit
-status](https://en.wikipedia.org/wiki/Exit_status). To provide an exit code use `exit 0` for success,
-or any non-zero status, like `exit 1` for error. The exit status of the most recently executed command is available
-through the `$?` variable. To communicate with the outside world, they use side effects like printing to [stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving files.
-
 ## Variables
 
 To assign a local variable, use `=` without any spaces before or after it. The variables can be accessed by prefixing their name with `$`.
@@ -123,7 +84,7 @@ $ foobar="hello!"
 $ foo="Whiskey "
 $ echo "$foobar"
 hello!
-$ echo "$foo"bar
+$ echo "$foo"'bar'
 Whiskey bar
 $ echo "${foo}bar"
 Whiskey bar
@@ -144,7 +105,7 @@ You can also define constants, that cannot be deleted, or altered
 
 ```shell
 $ readonly PI=3.14
-$ echo $PI
+$ echo "$PI"
 3.14
 $ PI=3
 sh: 5: PI: is read only
@@ -261,7 +222,6 @@ elif cond2 ; then
 fi
 ```
 
-
 ```shell
 $ if [ $(( 2 + 2 )) -eq 4 ]; then
 >   echo "wow! math works!"
@@ -272,7 +232,7 @@ wow! math works!
 For checking multiple conditions, you can use the `case ... in` syntax.
 
 ```bash
-case $variable in
+case "$variable" in
     pattern)
         commands
         ;;
@@ -323,6 +283,8 @@ done < my_filename.txt
 ## Evaluating expressions
 
 To evaluate an expression you can use ``` `...` ``` or `$(...)`, but using `$(...)` [is recommended](https://mywiki.wooledge.org/BashFAQ/082).
+While the quotes in the example below might look awkward, this is a [valid approach in Bash](https://unix.stackexchange.com/questions/118433/quoting-within-command-substitution-in-bash), since variables need to be quoted and the whole
+expression also should.
 
 ```shell
 cmd='date'
@@ -337,6 +299,104 @@ $ echo "$( 2 + 2 )"
 2: command not found
 $ echo "$(( 2 + 2 ))"
 4
+```
+
+
+## Functions
+
+Functions in Bash are quite different from what you may know from another programming (scripting?) languages. They don't
+include inputs in their definitions, instead, but use positional arguments accessed by `$1`, `$2`,
+... , `${10}`, ... etc. `$0` is reserved for the [name of the shell, or the shell script that contains the code](https://bash.cyberciti.biz/guide/$0).
+
+```shell
+$ hello() {
+>   echo "Hello $1!"
+> }
+$ hello "Tim"
+Hello Tim!
+```
+
+To access all elements, you can use `$@`.
+
+```shell
+$ first() { echo "$1"; }
+$ first 1 2 3
+1
+$ all() { echo "$@"; }
+$ all 1 2 3
+1 2 3
+$ tail() { shift; echo "$@"; }
+$ tail 1 2 3
+2 3
+```
+
+and `$#` holds the number of the arguments that were passed to the function.
+
+```shell
+$ count () { echo "$#"; }
+$ count a b c
+3
+```
+
+Remember to use semicolon `;` when writing multiple commands in single line, this also applies to `if ...; then`, `for ...; do`, and if closing the curly braces in the same line `...; }`.
+
+Functions can also use `read` command to access files, or [collect input from the user](https://stackoverflow.com/questions/18544359/how-to-read-user-input-into-a-variable-in-bash).
+
+Functions in Bash do not return anything but the [exit
+status](https://en.wikipedia.org/wiki/Exit_status). To provide an exit code use `exit 0` for success,
+or any non-zero status, like `exit 1` for error. The exit status of the most recently executed command is available
+through the `$?` variable. To communicate with the outside world, they use side effects like printing to [stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving files.
+
+## Scripts
+
+Bash code often comes not as functions, but as scripts. The scripts behave like functions, so if you create the
+`hello.sh` script, you can call it by invoking its name `./hello.sh`, you can also provide positional arguments like
+`./hello.sh -h`. When the function is saved in a directory that was [added to the `$PATH`](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/),
+for example, `/usr/bin/`, you can call it by just invoking its filename. Example of a trivial script is given below.
+
+```bash
+#!/bin/bash
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    echo "Usage: $(basename "$0") [-h|--help|name]"
+    echo
+    echo "Print 'Hello World!' or 'Hello [name]!' if name is provided."
+    echo "options:"
+    echo "-h or --help    Print this Help."
+    exit 0
+fi
+
+if [ -n "$1" ]; then
+    name="$1"
+    echo "Hello $name!"
+else
+    echo "Hello World!"
+fi
+```
+
+As you can see, since Bash only has positional arguments, flags like `-h` are just strings passed as arguments. For
+simple scripts a bunch of `if'`s would be enough, but otherwise you might need to use `case ... in`, combined with
+`shift` as described in the answers in [this thread](https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash).
+But, if it gets that complicated, I usually drop Bash and switch to using a language that has more advanced ways of
+parsing the arguments.
+
+The help gets printed when using the `-h` or `--help` flag and then the scripts exits with status `0` (success). There is
+no standard format for the documentation, though there is a [popular convention](https://stackoverflow.com/questions/9725675/is-there-a-standard-format-for-command-line-shell-help-text) that optional arguments are described in square brackets and alternatives are separated with `|`.
+
+If you save the script to the `hello.sh` file, next, you can [validate it with `shellcheck`](#Shellcheck), make it
+executable, and run it.
+
+```shell
+$ shellcheck hello.sh
+$ chmod +x hello.sh
+$ ./hello.sh -h
+Usage: hello.sh [name]
+
+Print 'Hello World!' or 'Hello [name]!' if name is provided.
+$ ./hello.sh
+Hello World!
+$ ./hello.sh Tim
+Hello Tim!
 ```
 
 ## Background & parallel processes
