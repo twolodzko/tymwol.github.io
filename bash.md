@@ -125,19 +125,19 @@ and return the value. In some cases it may be useful to fail with error message 
 Other expressions are summarized in the table below taken from [this StackOverflow answer](https://stackoverflow.com/a/16753536/3986320).
 
 ```
-+--------------------+----------------------+-----------------+---------------+
-|   Expression       |  FOO="world"         |     FOO=""      |   unset FOO   |
-|   in script:       |  (Set and Not Null)  |  (Set But Null) |    (Unset)    |
-+--------------------+----------------------+-----------------+---------------+
-| ${FOO:-hello}      | world                | hello           | hello         |
-| ${FOO-hello}       | world                | ""              | hello         |
-| ${FOO:=hello}      | world                | FOO=hello       | FOO=hello     |
-| ${FOO=hello}       | world                | ""              | FOO=hello     |
-| ${FOO:?hello}      | world                | error, exit     | error, exit   |
-| ${FOO?hello}       | world                | ""              | error, exit   |
-| ${FOO:+hello}      | hello                | ""              | ""            |
-| ${FOO+hello}       | hello                | hello           | ""            |
-+--------------------+----------------------+-----------------+---------------+
++-----------------+----------------------+-----------------+---------------+
+|   Expression    |  FOO="world"         |     FOO=""      |   unset FOO   |
+|   in script:    |  (Set and Not Null)  |  (Set But Null) |    (Unset)    |
++-----------------+----------------------+-----------------+---------------+
+| ${FOO:-hello}   | world                | hello           | hello         |
+| ${FOO-hello}    | world                | ""              | hello         |
+| ${FOO:=hello}   | world                | FOO=hello       | FOO=hello     |
+| ${FOO=hello}    | world                | ""              | FOO=hello     |
+| ${FOO:?hello}   | world                | error, exit     | error, exit   |
+| ${FOO?hello}    | world                | ""              | error, exit   |
+| ${FOO:+hello}   | hello                | ""              | ""            |
+| ${FOO+hello}    | hello                | hello           | ""            |
++-----------------+----------------------+-----------------+---------------+
 ```
 
 Additionally, Bash offers syntax for operating strings stored in the variables (everything is a string for Bash):
