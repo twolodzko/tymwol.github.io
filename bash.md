@@ -15,7 +15,7 @@ automating repeated tasks like "download this, do something to those files, call
 always available on the machine, so it is portable (no problems with dependencies!). It is also simple enough that
 others would easily understand what your code is doing. Bash is a tool for those fast-and-dirty tasks we often need to do on day to day basis.
 
-If you are looking for more references on Bash, I recommend the [Bash Pocket Reference](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/)
+If you are looking for more references on Bash, I recommend the [*Bash Pocket Reference*](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/)
 book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/) cheatsheet from the
 [⭐ wizard zines ⭐](https://wizardzines.com/comics/) series by Julia Evans ([@b0rk](https://twitter.com/b0rk)). If
 you need more advanced features than described below, then maybe you need some other tool than Bash for solving your
