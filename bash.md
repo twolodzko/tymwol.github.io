@@ -121,22 +121,23 @@ that goes into more details.
 Bash does not check if the variable exists when asking for its value, so `echo $xsSXSaa` would print an empty string,
 even if you never defined the `xsSXSaa` variable. Instead, it has a [very advanced syntax](https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html) for interacting with variables. If the variable does not have an assigned
 value, you can use `${variable:-default}` to return the `default` value instead, or `${variable:=default}` to *assign*
-and return the value. Other expressions are summarized in the table below taken from [this StackOverflow answer](https://stackoverflow.com/a/16753536/3986320).
+and return the value. In some cases it may be useful to fail with error message if the variable is not set `${variable?message}`.
+Other expressions are summarized in the table below taken from [this StackOverflow answer](https://stackoverflow.com/a/16753536/3986320).
 
 ```
-+--------------------+----------------------+-----------------+-----------------+
-|   Expression       |  FOO="world"         |     FOO=""      |    unset FOO    |
-|   in script:       |  (Set and Not Null)  |  (Set But Null) |     (Unset)     |
-+--------------------+----------------------+-----------------+-----------------+
-| ${FOO:-hello}      | world                | hello           | hello           |
-| ${FOO-hello}       | world                | ""              | hello           |
-| ${FOO:=hello}      | world                | FOO=hello       | FOO=hello       |
-| ${FOO=hello}       | world                | ""              | FOO=hello       |
-| ${FOO:?hello}      | world                | error, exit     | error, exit     |
-| ${FOO?hello}       | world                | ""              | error, exit     |
-| ${FOO:+hello}      | hello                | ""              | ""              |
-| ${FOO+hello}       | hello                | hello           | ""              |
-+--------------------+----------------------+-----------------+-----------------+
++--------------------+----------------------+-----------------+---------------+
+|   Expression       |  FOO="world"         |     FOO=""      |   unset FOO   |
+|   in script:       |  (Set and Not Null)  |  (Set But Null) |    (Unset)    |
++--------------------+----------------------+-----------------+---------------+
+| ${FOO:-hello}      | world                | hello           | hello         |
+| ${FOO-hello}       | world                | ""              | hello         |
+| ${FOO:=hello}      | world                | FOO=hello       | FOO=hello     |
+| ${FOO=hello}       | world                | ""              | FOO=hello     |
+| ${FOO:?hello}      | world                | error, exit     | error, exit   |
+| ${FOO?hello}       | world                | ""              | error, exit   |
+| ${FOO:+hello}      | hello                | ""              | ""            |
+| ${FOO+hello}       | hello                | hello           | ""            |
++--------------------+----------------------+-----------------+---------------+
 ```
 
 Additionally, Bash offers syntax for operating strings stored in the variables (everything is a string for Bash):
