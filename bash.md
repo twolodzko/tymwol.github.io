@@ -184,7 +184,8 @@ $ echo {a..z..3}
 a d g j m p s v y
 ```
 
-When using multiple curly brackets to create a string, it will create *all the combinations* of the possible strings. This can be used together with other commands, for example to create or remove multiple files.
+When using multiple curly brackets to create a string, it will create *all the combinations* of the possible strings.
+This can be used together with other commands, for example to create or remove multiple files.
 
 ```shell
 $ touch file_{1..3}{a..c}.{txt,md}
@@ -195,18 +196,18 @@ file_1a.txt  file_1b.txt  file_1c.txt  file_2a.txt  file_2b.txt  file_2c.txt  fi
 
 ## Conditional statements
 
-In Bash, you can use two different kinds of methods for evaluating logical expressions `[` and `[[`. This can be very confusing at first since they can behave differently.  [This StackOverflow answer](https://stackoverflow.com/a/47576482/3986320)
+In Bash, you can use two different kinds of methods for evaluating logical expressions `[` and `[[`. This can be very
+confusing at first since they can behave differently.  [This StackOverflow answer](https://stackoverflow.com/a/47576482/3986320)
 compares those operators, and in [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs) that discusses additionally the use of `(` and `((`. More
 details can be found on the man page of the [test](https://linux.die.net/man/1/test). TL;DR you can safely use single
 `[`, unless you need some specific functionalities of the extended operator `[[`. 
 
 In Bash `&` and `|` are binary AND and OR operators, for logical operators, use instead `&&`, `||`, and `!` for negation.
-Additionally, `&&` is commonly used to chan operations, e.g. `sudo apt update && sudo apt upgrade`, in such case
-the chain of operations fails at first failure because of using `&&` that is [lazily evaluated](https://en.wikipedia.org/wiki/Lazy_evaluation).
 
 It is useful to know some basic checks: `-z` empty string, `-n` non-empty
 string, `-d` directory exists, `-f` file exists, `-s` file is non-empty,
-`-x` executable file exists. Strings can be compared using the `=`, `!=`, `<`, `>`, operators, but beware of using `==` that [behaves differently](https://kapeli.com/cheat_sheets/Bash_Test_Operators.docset/Contents/Resources/Documents/index)
+`-x` executable file exists. Strings can be compared using the `=`, `!=`, `<`, `>`, operators, but beware of using
+`==` that [behaves differently](https://kapeli.com/cheat_sheets/Bash_Test_Operators.docset/Contents/Resources/Documents/index)
 when used in `[` and `[[`. For comparing numeric values use instead `-eq` equal, `-ne` not equal, `-lt` lower than,
 `-le` less or equal, `-gt` greater than, `-ge` greater or equal. Alternatively, the `==`, `!=`, `<`, `<=`, `>`, `>=`
 operators can be used in double round brackets to compare numeric values e.g. `(( 2 < 3 ))` is equivalent to `[ 2 -lt 3 ]`.
@@ -399,7 +400,51 @@ $ ./hello.sh Tim
 Hello Tim!
 ```
 
-## Background & parallel processes
+## Redirecting output and raising errors
+
+While functions and scripts do not return any values, only the exit statuses, they can print to [two channels *stdout*
+and *stderr*](https://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr). The first one is used
+for regular printing, you see it in the console. The second one is *standard error*, we use it for throwing errors.
+
+You can [redirect](https://www.gnu.org/software/bash/manual/html_node/Redirections.html) the output of a command using
+`>`, or `1>` for example, `ls > files.txt` will redirect the output of the `ls` function to the `files.txt` file. When
+redirecting to file, `>` will overwrite the target file, to append it use `>>` instead. Use `2>` if you want to
+redirect *stderr*. You can use two redirects `./script.sh 1> output.txt 2> errors.log`, or use `&>` to redirect
+both to the same target. If you want to suppress the output, just redirect it to `/dev/null`, for example,
+
+```shell
+$ find / -name "foo" 2> /dev/null
+```
+
+will suppress all the "Permission denied" errors. To redirect the *stdout* to both the console and a file, use the [`tee` command](https://linuxize.com/post/linux-tee-command/).
+
+In some cases, you may want to [redirect *stderr* to *stdout*](https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean),
+this can be done using `2>&1`, or the other way around `1>&2`. This can be used to [raise an error](https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script).
+
+```bash
+echo "Error!" 1>&2
+exit 64
+```
+
+## Chaining and piping
+
+Multiple commands can be written in a single line when we combine them with `&&`, for example,
+`sudo apt update && sudo apt upgrade`. In such a case, they will be invoked sequentially, and the chain will stop in case
+one of them throws an error. 
+
+You can also pipe the output of one command as an input to another command. For example, `ls | grep "foo"` will redirect 
+the list of files returned by `ls` and use `grep` to filter out all the names containing the "foo" phrase. For piping
+to `sudo`, you need to use the [`tee` command](https://linuxize.com/post/linux-tee-command/).
+
+To give a [more advanced example](https://stackoverflow.com/questions/1358540/how-can-i-count-all-the-lines-of-code-in-a-directory-recursively)
+of piping we can use `find` to list all the Python files, use `xargs` to pass those file names to `cat` to print their
+contents, and use `wc -l` to count all the lines.
+
+```shell
+$ ( find ./ -name '*.py' -print0 | xargs -0 cat ) | wc -l
+```
+
+## Parallel processes
 
 To start two simultaneous processes, just combine them with `&`.
 
@@ -424,7 +469,7 @@ being closed, you can use the "no hangup" `nohup` command.
 
 
 Those commands are build-in and do not have `man` pages, so use `fg --help` or `help fg` for details. To list all
-the build-in commands use `help`.
+the build-in commands use `help` alone.
 
 ## Debugging and testing
 
