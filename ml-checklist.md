@@ -68,9 +68,9 @@ you aim to solve some problem, rather than to play the metric at all costs.*
 *[Lean Startup][lean] has introduced the idea of the [minimum viable product (MVP)][mvp], the simplest solution that
 "does the job". Before building a full-blown machine learning model, first try the cheap and easy solution like
 rule-based system, decision tree, linear regression, etc. This would help with framing the problem, can be [used
-to gather initial feedback][ml-product] ("is this what you need?"), and would serve as a baseline. Emmanuel Ameisen
-makes similar points in [his book][ml-powered], and in [this blog post][solve-nlp], there's also a nice
-[talk about the baselines][baselines].*
+to gather initial feedback][ml-product] ("is this what you need?"), and would serve as a [baseline][smerity].
+Emmanuel Ameisen makes similar points in [his book][ml-powered], and in [this blog post][solve-nlp], there's also
+a nice [talk about the baselines][baselines].*
 
  * What is your baseline? How was the problem solved before (not necessarily using machine learning)?
  * Do you have access to the metrics needed to compare your solution with the baseline?
@@ -246,4 +246,4 @@ webpage by Google.*
  [ml-product]: https://www.jeremyjordan.me/ml-requirements/
  [ml-systems-design]: https://huyenchip.com/machine-learning-systems-design/toc.html
  [jupyter-fail]: https://blog.jetbrains.com/datalore/2020/12/17/we-downloaded-10-000-000-jupyter-notebooks-from-github-this-is-what-we-learned/
-
+ [smerity]: https://smerity.com/articles/2017/baselines_need_love.html
