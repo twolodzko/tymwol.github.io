@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Bash pocket guide"
-date:   2021-02-23
+date:   2021-02-25
 ---
 
 Bash is like regular expressions: everyone uses it, nobody knows it well. Every time I need to write Bash, I find
@@ -208,7 +208,7 @@ It is useful to know some basic checks: `-z` empty string, `-n` non-empty
 string, `-d` directory exists, `-f` file exists, `-s` file is non-empty,
 `-x` executable file exists. Strings can be compared using the `=`, `!=`, `<`, `>`, operators, but beware of using
 `==` that [behaves differently](https://kapeli.com/cheat_sheets/Bash_Test_Operators.docset/Contents/Resources/Documents/index)
-when used in `[` and `[[`. For comparing numeric values use instead `-eq` equal, `-ne` not equal, `-lt` lower than,
+when used in `[` and `[[`. For comparing numeric values use instead: `-eq` equal, `-ne` not equal, `-lt` lower than,
 `-le` less or equal, `-gt` greater than, `-ge` greater or equal. Alternatively, the `==`, `!=`, `<`, `<=`, `>`, `>=`
 operators can be used in double round brackets to compare numeric values e.g. `(( 2 < 3 ))` is equivalent to `[ 2 -lt 3 ]`.
 
