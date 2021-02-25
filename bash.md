@@ -43,8 +43,8 @@ To print, you can use either `echo`, or `printf` (formatted).
 ```shell
 $ echo "Hello World!"
 Hello World!
-$ printf "%.2f\n" 1,12345
-1,12
+$ printf "%.2f\n" 1.12345
+1.12
 $ printf "%s went to the %s and bought a %s\n" Jack shop lollypop
 Jack went to the shop and bought a lollypop
 ```
