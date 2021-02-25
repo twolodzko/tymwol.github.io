@@ -477,8 +477,8 @@ To run a Bash script in [debug mode](https://tldp.org/LDP/Bash-Beginners-Guide/h
 `bash -x script.sh`. The debug mode can also be activated for chosen lines in a script by encapsulating them in
 `set -x` and `set +x`
 
-Since Bash does not fail by default but continues running (to read more on the `EOF` trick, check
-[this thread](https://stackoverflow.com/questions/2500436/how-does-cat-eof-work-in-bash)). 
+Bash by default does not fail, but continues running (to read more on the `EOF` trick, check
+[this thread](https://stackoverflow.com/questions/2500436/how-does-cat-eof-work-in-bash)).
 
 ```shell
 $ cat << EOF > test.sh
