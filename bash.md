@@ -224,6 +224,9 @@ elif cond2 ; then
 fi
 ```
 
+`$(( ... ))` is used to evaluate basic mathematical expressions, below
+I use it to illustrate an `if` statement.
+
 ```shell
 $ if [ $(( 2 + 2 )) -eq 4 ]; then
 >   echo "wow! math works!"
