@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Bash pocket guide"
-date:   2021-02-25
+date:   2021-02-26
 ---
 
 Bash is like regular expressions: everyone uses it, nobody knows it well. Every time I need to write Bash, I find
@@ -13,7 +13,8 @@ are running a Unix machine (Docker anyone?). While in most cases you could repla
 language, using few lines of Bash could lead to a much simpler code. For me, Bash is useful for
 automating repeated tasks like "download this, do something to those files, call this script, ...". Bash would be almost
 always available on the machine, so it is portable (no problems with dependencies!). It is also simple enough that
-others would easily understand what your code is doing. Bash is a tool for those fast-and-dirty tasks we often need to do on day to day basis.
+others would easily understand what your code is doing. Bash is a tool for those fast-and-dirty tasks we often need
+to do on day to day basis.
 
 If you are looking for more references on Bash, I recommend the [*Bash Pocket Reference*](https://www.oreilly.com/library/view/bash-pocket-reference/9781449388669/)
 book by Arnold Robbins and the [*Bite Size Bash*](https://wizardzines.com/zines/bite-size-bash/) cheatsheet from the
@@ -23,9 +24,11 @@ problem?
 
 ## What is `/bin/sh`?
 
-People often wonder if `/bin/sh` and `/bin/bash` is the same and [the answer is *no*](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash). `/bin/sh` is just a symbolic link to `Bash`, or `Dash`, etc. To check what is your
-default shell use `echo "$SHELL"`. To change your default shell, use the [`chsh` utility](https://www.tecmint.com/change-a-users-default-shell-in-linux/).
-Because the shells may differ in details of the implementation, make sure to start bash scripts with the [shebang](https://github.com/koalaman/shellcheck/wiki/SC2148):
+People often wonder if `/bin/sh` and `/bin/bash` is the same and [the answer is *no*](https://stackoverflow.com/questions/5725296/difference-between-sh-and-bash).
+`/bin/sh` is just a symbolic link to `Bash`, or `Dash`, etc. To check what is your default shell use `echo "$SHELL"`.
+To change your default shell, use the [`chsh` utility](https://www.tecmint.com/change-a-users-default-shell-in-linux/).
+Because the shells may differ in details of the implementation, make sure to start bash scripts with the
+[shebang](https://github.com/koalaman/shellcheck/wiki/SC2148):
 
 ```bash
 #!/bin/bash
@@ -65,7 +68,8 @@ $PWD
 
 ## Variables
 
-To assign a local variable, use `=` without any spaces before or after it. The variables can be accessed by prefixing their name with `$`.
+To assign a local variable, use `=` without any spaces before or after it. The variables can be accessed by prefixing
+their name with `$`.
 
 ```shell
 $ x = 2
@@ -113,14 +117,16 @@ $ unset PI
 sh: 6: unset: PI: is read only
 ```
 
-Additionally, you can use `export` to [make the variable available also to the child processes](https://superuser.com/questions/153371/what-does-export-do-in-bash). There is a nice [guide on Bash variables](https://www.cyberciti.biz/faq/set-environment-variable-linux/)
+Additionally, you can use `export` to [make the variable available also to the child processes](https://superuser.com/questions/153371/what-does-export-do-in-bash).
+There is a nice [guide on Bash variables](https://www.cyberciti.biz/faq/set-environment-variable-linux/)
 that goes into more details.
 
 ## Operations on the variables
 
 Bash does not check if the variable exists when asking for its value, so `echo $xsSXSaa` would print an empty string,
-even if you never defined the `xsSXSaa` variable. Instead, it has a [very advanced syntax](https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html) for interacting with variables. If the variable does not have an assigned
-value, you can use `${variable:-default}` to return the `default` value instead, or `${variable:=default}` to *assign*
+even if you never defined the `xsSXSaa` variable. Instead, it has a [very advanced syntax](https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html)
+for interacting with variables. If the variable does not have an assigned value, you can use
+`${variable:-default}` to return the `default` value instead, or `${variable:=default}` to *assign*
 and return the value. In some cases it may be useful to fail with error message if the variable is not set `${variable?message}`.
 Other expressions are summarized in the table below taken from [this StackOverflow answer](https://stackoverflow.com/a/16753536/3986320).
 
@@ -198,9 +204,10 @@ file_1a.txt  file_1b.txt  file_1c.txt  file_2a.txt  file_2b.txt  file_2c.txt  fi
 
 In Bash, you can use two different kinds of methods for evaluating logical expressions `[` and `[[`. This can be very
 confusing at first since they can behave differently.  [This StackOverflow answer](https://stackoverflow.com/a/47576482/3986320)
-compares those operators, and in [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs) that discusses additionally the use of `(` and `((`. More
-details can be found on the man page of the [test](https://linux.die.net/man/1/test). TL;DR you can safely use single
-`[`, unless you need some specific functionalities of the extended operator `[[`. 
+compares those operators, and in [this thread](https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs)
+that discusses additionally the use of `(` and `((`. More details can be found on the man page of
+the [test](https://linux.die.net/man/1/test). TL;DR you can safely use single `[`, unless you
+need some specific functionalities of the extended operator `[[`. 
 
 In Bash `&` and `|` are binary AND and OR operators, for logical operators, use instead `&&`, `||`, and `!` for negation.
 
@@ -224,8 +231,10 @@ elif cond2 ; then
 fi
 ```
 
+I will use evaluating basic mathematical expression to illustrate an `if` statement.
+
 ```shell
-$ if [ $(( 2 + 2 )) -eq 4 ]; then
+$ if [ "$(( 2 + 2 ))" -eq 4 ]; then
 >   echo "wow! math works!"
 > fi
 wow! math works!
@@ -249,7 +258,7 @@ esac
 
 Where the patterns [can be either](https://www.thegeekstuff.com/2010/07/bash-case-statement/) exact values that are
 matched, or wildcards and patterns. Moreover, different patterns can be combined using `|`. Additionally, there
-is [a cool trick](https://unix.stackexchange.com/a/75356/91505), that you can use `;&` as a delimiter to call all the 
+is [a cool trick](https://unix.stackexchange.com/a/75356/91505), that you can use `;&` as a delimiter to call all the
 cases following the matched pattern, or `;;&` to be able to match multiple patterns.
 
 
@@ -339,14 +348,16 @@ $ count a b c
 3
 ```
 
-Remember to use semicolon `;` when writing multiple commands in single line, this also applies to `if ...; then`, `for ...; do`, and if closing the curly braces in the same line `...; }`.
+Remember to use semicolon `;` when writing multiple commands in single line, this also applies to `if ...; then`,
+`for ...; do`, and if closing the curly braces in the same line `...; }`.
 
 Functions can also use `read` command to access files, or [collect input from the user](https://stackoverflow.com/questions/18544359/how-to-read-user-input-into-a-variable-in-bash).
 
 Functions in Bash do not return anything but the [exit
 status](https://en.wikipedia.org/wiki/Exit_status). To provide an exit code use `exit 0` for success,
 or any non-zero status, like `exit 1` for error. The exit status of the most recently executed command is available
-through the `$?` variable. To communicate with the outside world, they use side effects like printing to [stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving files.
+through the `$?` variable. To communicate with the outside world, they use side effects like printing to
+[stdout](https://www.howtogeek.com/435903/what-are-stdin-stdout-and-stderr-on-linux/), or saving files.
 
 ## Scripts
 
@@ -416,7 +427,8 @@ both to the same target. If you want to suppress the output, just redirect it to
 $ find / -name "foo" 2> /dev/null
 ```
 
-will suppress all the "Permission denied" errors. To redirect the *stdout* to both the console and a file, use the [`tee` command](https://linuxize.com/post/linux-tee-command/).
+will suppress all the "Permission denied" errors. To redirect the *stdout* to both the console and a file, use the
+[`tee` command](https://linuxize.com/post/linux-tee-command/).
 
 In some cases, you may want to [redirect *stderr* to *stdout*](https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean),
 this can be done using `2>&1`, or the other way around `1>&2`. This can be used to [raise an error](https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script).
@@ -440,9 +452,9 @@ $ wc -l <<< "$(printf "first\nsecond\nthird\n")"
 
 Multiple commands can be written in a single line when we combine them with `&&`, for example,
 `sudo apt update && sudo apt upgrade`. In such a case, they will be invoked sequentially, and the chain will stop in case
-one of them throws an error. 
+one of them throws an error.
 
-You can also pipe the output of one command as an input to another command. For example, `ls | grep "foo"` will redirect 
+You can also pipe the output of one command as an input to another command. For example, `ls | grep "foo"` will redirect
 the list of files returned by `ls` and use `grep` to filter out all the names containing the "foo" phrase. For piping
 to `sudo`, you need to use the [`tee` command](https://linuxize.com/post/linux-tee-command/).
 
