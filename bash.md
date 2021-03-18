@@ -426,6 +426,16 @@ echo "Error!" 1>&2
 exit 64
 ```
 
+Another useful redirect method are the [here strings](https://linux.die.net/abs-guide/x15683.html) `<<<`, that pass
+a string to a command as if it was a file.
+
+```shell
+$ wc -l "$(printf "first\nsecond\nthird\n")"
+wc: 'first'$'\n''second'$'\n''third': No such file or directory
+$ wc -l <<< "$(printf "first\nsecond\nthird\n")"
+3
+```
+
 ## Chaining and piping
 
 Multiple commands can be written in a single line when we combine them with `&&`, for example,
