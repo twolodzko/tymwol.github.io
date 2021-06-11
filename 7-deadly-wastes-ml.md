@@ -21,6 +21,11 @@ tests (run the whole pipeline on simplified data, with reduced settings to see i
 to catch the problems early), or having test data cases for which the model [needs to make][karpathy]
 correct predictions.
 
+Model doing unfair (e.g. racist) predictions is another possible defect, that could lead to significant
+costs in terms of reputation of the company, but also relating to fixing the model.
+
+[andon][andon]  [fail fast][fail-fast]
+
 # 2. Waste of inventory
 
 In traditional software engineering waste of inventory is usually understood in categories
@@ -50,6 +55,14 @@ or Makefiles to automate them may be easy solutions to avoid the waste.
 
 # 4. Waste of waiting
 
+In lean production, inventory flows smoothly between different work stations on production line.
+Each of the work stations has single responsibility and the workload is balanced to avoid waiting.
+While this cannot be directly translated to software engineering and machine learning,
+we still can define the machine learning process in terms of a modular
+pipelines (download the data, clean it, filter, split to train and test sets, engineer features,
+train, evaluate, publish, etc). Such pipeline is easily extensible, modifiable, debuggable, etc
+what makes maintainence and improvements of the code easier. 
+
 Waiting until the model finishes training is probably the biggest waste of waiting in machine
 learning. Unfortunately, it is also the one that is the hardest to avoid. To speed up the
 training you could always use more powerful machine to do the computations. Such machines
@@ -74,6 +87,12 @@ You need to meet the stakeholders, sometimes the potential customers or domain e
 learn more about the problem, the data owners to learn how to access the data, etc. Those
 are the obvious areas of improvement in terms of waste of motion.
 
+Unnecessary movement is a waste of motion. Using standardized project templates, tools, 
+APIs, code formatting (e.g. auto-formatting using Black), etc reduces unnecessary "movement"
+related to making decisions and agreeing on those issues every time. Onboarding new employees,
+or taking over in case of a standardized project is also easier. That's the reason why companies
+like [Google][google] use standardization.
+
 The technological side of the waste of motion is usually solved by automating the data and
 machine learning pipelines using technologies like Bash scripts, Airflow or Luigi pipelines,
 that take care about the moving parts of the process by themselves. Shared repository and
@@ -90,12 +109,19 @@ and computing the features on-the-fly.
 
 # 7. Waste of overproduction
 
-Adding an extra features to the software is a waste of overproduction. Machine learning models
+Adding an extra features to the software is a waste of overproduction.
+
+Machine learning projects tend to take much longer than planned. It is always possible to 
+tune the hyperparameters a little bit more, try different model, better clean the data, etc
+to gain some slight improvement in the predictions accuracy.
+
+ Machine learning models
 usually do one thing only, so except producing unnecessary supporting code, it is not that big
-issue. The example of waste of overproduction in machine learning could be using an overtly 
+issue. The example of waste of overproduction in machine learning is using an overtly 
 complicated model to solve a problem that can be solved using a simpler solution. Many natural
-language processing problems can be solved using solutions such simple as TF-IDF features, or
-regular expressions, rather than the state-of-the-art language models with millions of parameters.
+language processing problems can be solved using standard machine learning algorithms with
+TF-IDF features, or even regular expressions, rather than the state-of-the-art language models
+with millions of parameters.
 Starting with a simple model (rule-based, logistic regression, decision tree) may be a good start
 to preventing overproduction. The simple model may turn out to be good enough, at worst it can
 be used as a benchmark when developing a more complicated model. As described by ....[ml-powered],
@@ -107,6 +133,8 @@ users of the product early.
 
 Are we there yet? Data science and machine learning seem to be behind of software engineering
 in terms of agile and lean processes to making them more efficient, but the MLOps movement ..... 
+
+seven deadly wastes clearly apply to the data science scenario as well ...
 
 
  [wastes]: https://www.linkedin.com/learning/dealing-with-the-seven-deadly-wastes/seven-wastes-overview
@@ -123,3 +151,6 @@ in terms of agile and lean processes to making them more efficient, but the MLOp
  [rf-benchmarks]: https://github.com/szilard/benchm-ml
  [multitasking]: https://www.apa.org/research/action/multitask
  [grid-search]: https://stats.stackexchange.com/questions/160479/practical-hyperparameter-optimization-random-vs-grid-search
+ [google]: https://www.goodreads.com/book/show/48816586-software-engineering-at-google
+ [andon]: https://en.wikipedia.org/wiki/Andon_(manufacturing)
+ [fail-fast]: https://www.ibm.com/garage/method/practices/culture/failing-fast
