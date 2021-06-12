@@ -9,8 +9,11 @@ Lean was a way of improving manufacturing efficiency in [Toyota][toyota]. [Lean 
 ## 1. Waste of defects
 
 You could avoid many defects by testing the code. [Jeremy Jordan][jj-testing-ml], [Luigi Patruno][mlp-testing-ml], and [Martin Fowler's blog][cd4ml] make good points about testing machine learning-based software. Start with writing unit tests for the code and verifying the test error metrics. The less obvious ideas are smoke tests (running the whole pipeline to see if nothing "smokes") or having test data cases for which the model [needs to make][karpathy] correct predictions, etc.
+
 Evaluating the [model fairness][fairness] is also valuable. Model making unfair (e.g. racist) predictions could induce reputational costs.
+
 Lean manufacturing also introduced the idea of [andon][andon], instantly stopping the production line in case of a defect and prioritizing fixing it. We can apply it to machine learning as well.
+
 Imagine you are building a linear regression model to predict the number of website visits. The model is [wrong, but it proved useful][models-wrong] because of being fast and easily interpretable. Before using it in production, you verified that negative predictions happen rarely. To prevent them completely, you wrote code replacing negative values with zeros. Now imagine a [data drift][data-drift] occurs and your algorithm starts returning a lot of zeroes. Debugging such issues, especially in complex systems, can be troublesome. Instead of lipsticking the pig, often it is wiser to [fail fast][fail-fast]. Maybe you shouldn't have replaced the values with zeros so the problems would be instantly visible? The less extreme solution is to monitor such cases and send alerts if their frequency increases.
 
 ## 2. Waste of inventory
@@ -25,14 +28,18 @@ The classic case of the waste of processing in software engineering is the unnec
 ## 4. Waste of waiting
 
 In a lean production line, inventory flows smoothly between different workstations. Each workstation has a single responsibility with the workload balanced between the workstations to avoid downtime. While it's not the same, it's a good practice to run the machine learning tasks in modular pipelines (download the data, clean it, filter, split to train and test sets, engineer features, train, evaluate, publish, etc). It would not make anything faster but is easily extensible, modifiable, and debuggable.
+
 Waiting for the model to finish training is the biggest waste of waiting. Unfortunately, it is also one of the hardest to avoid. To speed it up, you could use a more powerful machine. Such machines are more expensive, but consider the costs in the context of the hourly wage for the idle data scientists waiting for the results. Using [early stopping][early-stopping] of the training may shorten the training time and improve the quality of the results.
+
 Waste of waiting may also be related to the popularity of frameworks such as PyTorch relatively to TensorFlow 1.x. Before TensorFlow 2.x introduced the [eager mode][eager-mode], users of PyTorch valued it because it made the work more interactive, giving instant feedback about the code.
+
 After training a model, we usually wait for feedback from the users. Release the product early and often to get the feedback faster, as [Emmanuel Ameisen][ml-powered] suggests. [Extreme programming recommends][extreme-programming] even having the customers on-site. 
 
 ## 5. Waste of motion
 
 Waste of motion is about unnecessary movements. When starting a data science project you need to meet the stakeholders, the potential customers, or domain experts to learn more about the problem, and the data owners to learn how to access the data, etc. Improving processes related to those tasks can reduce the waste of motion.
 Using standardized templates, tools, APIs, code formatting (e.g. auto-formatting using Black), etc reduces unnecessary "movement" related to deciding on them on a case-by-case basis. Onboarding new employees or taking over someone's work is easier when projects are standardized. That's one of the reasons [Google][google] heavily uses standardization.
+
 Automating the data and machine learning pipelines also reduces the waste of motion. Bash scripts, Airflow, or Luigi pipelines, can take care of the moving parts of the process. Version control keeps the scripts and notebooks in a single place, so there's no ambiguity about where to find them.
 
 ## 6. Waste of transportation
