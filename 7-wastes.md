@@ -31,7 +31,7 @@ In a lean production line, inventory flows smoothly between different workstatio
 
 Waiting for the model to finish training is the biggest waste of waiting. Unfortunately, it is also one of the hardest to avoid. To speed it up, you could use a more powerful machine. Such machines are more expensive, but consider the costs in the context of the hourly wage for the idle data scientists waiting for the results. Using [early stopping][early-stopping] of the training may shorten the training time and improve the quality of the results.
 
-Waste of waiting may also be related to the popularity of frameworks such as PyTorch relatively to TensorFlow 1.x. Before TensorFlow 2.x introduced the [eager mode][eager-mode], users of PyTorch valued it because it made the work more interactive, giving instant feedback about the code.
+Waste of waiting may also be related to the popularity of frameworks such as PyTorch relatively to TensorFlow 1.x. Before TensorFlow introduced the [eager mode][eager-mode], users of PyTorch valued it because it made the work more interactive, giving instant feedback about the code.
 
 After training a model, we usually wait for feedback from the users. Release the product early and often to get the feedback faster, as [Emmanuel Ameisen][ml-powered] suggests. [Extreme programming recommends][extreme-programming] even having the customers on-site. 
 
