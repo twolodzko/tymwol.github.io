@@ -4,7 +4,7 @@ title:  "Can Machine Learning be Lean?"
 date:   2021-06-12
 ---
 
-Lean was a way of improving manufacturing efficiency in [Toyota][toyota]. [Lean software][lean-software] development and [lean startup][lean-startup] methodologies followed it. One of the key take-aways of lean is cutting off the unnecessary processes while leaving the ones that bring actual value. Could the ideas be translated to machine learning and data science? Let's walk through the [seven][wastes-1] [deadly wastes][wastes-2] and see if they apply to machine learning.
+Lean was a way of improving manufacturing efficiency in [Toyota][toyota]. [Lean software][lean-software] development and [lean startup][lean-startup] methodologies followed it. One of the key take-aways of lean is cutting off the unnecessary processes while leaving the ones that bring actual value. Could the ideas be translated to machine learning and data science? Let's walk through the [seven][wastes-1] [deadly wastes][wastes-2] and explore examples of how they apply to machine learning.
 
 ## 1. Waste of defects
 
