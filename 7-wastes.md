@@ -8,9 +8,7 @@ Lean was a way of improving manufacturing efficiency in [Toyota][toyota]. [Lean 
 
 ## 1. Waste of defects
 
-You could avoid many defects by testing the code. [Jeremy Jordan][jj-testing-ml], [Luigi Patruno][mlp-testing-ml], and [Martin Fowler's blog][cd4ml] make good points about testing machine learning-based software. Start with writing unit tests for the code and verifying the test error metrics. The less obvious ideas are smoke tests (running the whole pipeline to see if nothing "smokes") or having test data cases for which the model [needs to make][karpathy] correct predictions, etc.
-
-Evaluating the [model fairness][fairness] is also valuable. Model making unfair (e.g. racist) predictions could induce reputational costs.
+You could avoid many defects by testing the code. [Jeremy Jordan][jj-testing-ml], [Luigi Patruno][mlp-testing-ml], and [Martin Fowler's blog][cd4ml] make good points about testing machine learning-based software. Start with writing unit tests for the code and verifying the test error metrics. The less obvious ideas are smoke tests (running the whole pipeline to see if nothing "smokes") or having test data cases for which the model [needs to make][karpathy] correct predictions, etc. Evaluating the [model fairness][fairness] is also valuable. Model making unfair (e.g. racist) predictions could induce reputational costs.
 
 Lean manufacturing also introduced the idea of [andon][andon], instantly stopping the production line in case of a defect and prioritizing fixing it. We can apply it to machine learning as well. Imagine you are building a linear regression model to predict the number of website visits. The model is [wrong, but it proved useful][models-wrong] because of being fast and easily interpretable. Before using it in production, you verified that negative predictions happen rarely. To prevent them completely, you wrote code replacing negative values with zeros. Now imagine a [data drift][data-drift] occurs and your algorithm starts returning a lot of zeroes. Debugging such issues, especially in complex systems, can be troublesome. Instead of lipsticking the pig, often it is wiser to [fail fast][fail-fast]. Maybe you shouldn't have replaced the values with zeros so the problems would be instantly visible? The less extreme solution is to monitor such cases and send alerts if their frequency increases.
 
@@ -50,13 +48,14 @@ Adding unnecessary features to the software is a waste of overproduction. Machin
 
 ## Are we there yet?
 
-Software engineering has built many tools to become more agile and lean, data science and machine learning are a bit behind. [MLOps][mlops-book] tries bringing the DevOps ideas into the data science ground. We are currently observing the emergence of different tools and ideas for improving the processes and productionalizing machine learning models. Applying lean thinking principles to machine learning projects can lead to better utilization of resources.
+Software engineering has built many tools to become more agile and lean, data science and machine learning are a bit behind. [MLOps][mlops-book] tries bringing the DevOps ideas into the data science ground. We are currently observing the emergence of different tools and ideas for making productionaliziation of machine learning models easier. But [DevOps][devops] is also about making software engineering more agile. Lean thinking principles can help with better utilization of resources and improving the efficiency of machine learning projects.
 
 
  [agile-ds]: https://www.linkedin.com/learning/learning-data-science-using-agile-methodology/welcome
  [andon]: https://en.wikipedia.org/wiki/Andon_(manufacturing)
  [cd4ml]: https://martinfowler.com/articles/cd4ml.htmls
  [data-drift]: https://blog.dataiku.com/a-primer-on-data-drift
+ [devops]: https://www.goodreads.com/book/show/26083308-the-devops-handbook?
  [ds-scrum]: https://www.datascience-pm.com/scrum/
  [eager-mode]: https://ai.googleblog.com/2017/10/eager-execution-imperative-define-by.html
  [early-stopping]: https://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.900
