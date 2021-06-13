@@ -55,7 +55,7 @@ Software engineering has built many tools to become more agile and lean, data sc
  [andon]: https://en.wikipedia.org/wiki/Andon_(manufacturing)
  [cd4ml]: https://martinfowler.com/articles/cd4ml.htmls
  [data-drift]: https://blog.dataiku.com/a-primer-on-data-drift
- [devops]: https://www.goodreads.com/book/show/26083308-the-devops-handbook?
+ [devops]: https://www.goodreads.com/book/show/26083308-the-devops-handbook
  [ds-scrum]: https://www.datascience-pm.com/scrum/
  [eager-mode]: https://ai.googleblog.com/2017/10/eager-execution-imperative-define-by.html
  [early-stopping]: https://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.900
