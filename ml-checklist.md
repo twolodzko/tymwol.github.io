@@ -184,7 +184,7 @@ as an inspiration on how to test the black-box'ish machine learning code.*
    so if you re-trained the algorithm on such data, you would be amplifying the recommendations
    you already made.*
 
- * Would you be able to easily [access the metrics][metrics-jordan] (e.g. Kibana, Grafana, MLflow, Neptune)?
+ * Would you be able to easily [access the metrics][metrics-jordan] (e.g. MLflow, Neptune)?
  * Who's going to monitor the metrics?
 
 ## 7. Can it be used?
