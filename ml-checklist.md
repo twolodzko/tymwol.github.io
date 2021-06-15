@@ -150,6 +150,7 @@ as an inspiration on how to test the black-box'ish machine learning code.*
  * How would you deploy a new version of the model (manual inspection, canary deployment, A/B testing)?
  * How often do you need to re-train the model? What is the upper bound ("at least") and
  lower bound ("not sooner than")?
+ * If something goes wrong, how would you unroll the deployment?
 
 ## 6. How would you monitor it?
 
