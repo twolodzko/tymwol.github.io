@@ -14,7 +14,7 @@ Lean manufacturing also introduced the idea of [andon][andon], instantly stoppin
 
 ## 2. Waste of inventory
 
-In traditional software engineering partially done work is a common source of waste of inventory. The same applies to data science, but there are additional examples of waste specific to this field. Idle jobs, like virtual machines that were not closed, or unnecessarily repeated computations are waste. The less obvious ones may be using inadequate or costly technological solutions. Instead of [grid search][grid-search] for hyperparameter tuning, using the random search or Bayesian optimization might be more efficient. Using big data technologies (Spark) for small datasets is unnecessary at best (e.g. [Pafka Szilard][rf-benchmark] has shown that Spark's implementation of random forest can be less efficient than the regular implementations). Training a model not usable in a production environment (too slow, too high memory consumption) is also waste.
+In traditional software engineering partially done work is a common source of waste of inventory. The same applies to data science, but there are additional examples of waste specific to this field. Idle jobs, like virtual machines that were not closed, or unnecessarily repeated computations are waste. The less obvious ones may be using inadequate or costly technological solutions. Instead of [grid search][grid-search] for hyperparameter tuning, using the random search or Bayesian optimization might be more efficient. Using big data technologies (Spark) for small datasets is unnecessary at best (e.g. [Spark's random forest][rf-benchmark] can be less efficient than the regular implementations, [Hadoop can be slower][hadoop] than command line). Training a model not usable in a production environment (too slow, too high memory consumption) is also waste.
 
 ## 3. Waste of processing
 
@@ -64,6 +64,7 @@ Software engineering has built many tools to become more agile and lean, data sc
  [fairness]: https://fairmlbook.org/
  [google]: https://www.goodreads.com/book/show/48816586-software-engineering-at-google
  [grid-search]: https://stats.stackexchange.com/questions/160479/practical-hyperparameter-optimization-random-vs-grid-search
+ [hadoop]: https://adamdrake.com/command-line-tools-can-be-235x-faster-than-your-hadoop-cluster.html
  [jj-testing-ml]: https://www.jeremyjordan.me/testing-ml/
  [karpathy]: https://www.youtube.com/watch?v=hx7BXih7zx8
  [lean-software]: https://www.goodreads.com/book/show/194338.Lean_Software_Development
